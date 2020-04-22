@@ -1,0 +1,1 @@
+glpsol --math trabalho02A.mod --data trabalho02.dat -o trabalho02A.sol
