@@ -31,20 +31,3 @@ lngA {i in N}: dlng[i] >= 2 * pi * R * (dc_lng-lng[i])/360;
 lngB {i in N}: dlng[i] >= 2 * pi * R * (lng[i]-dc_lng)/360;
 dist {i in N}: d[i] = dlat[i] + dlng[i];
 buildcost: DTotalCost = DC * DCost;
-
-
-
-printf "\n";
-printf "*** minimizing total distance\n";
-printf "Location of the DC: %g, %g \n",  dc_lat, dc_lng;
-printf "DC cost: %g euros\n",  DTotalCost;
-printf "Total cost: %.8g euros\n", tcost;
-printf "Town closest to DC:   ";
-printf {j in N: d[j] = min {i in N} d[i]} j;
-printf "\n";
-printf "Town with largest distributions costs:   ";
-printf {j in N: c[j]*d[j] = max {i in N} c[i]*d[i]} j;
-printf "\n";
-
-
-end;

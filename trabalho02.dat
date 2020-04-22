@@ -1,7 +1,5 @@
 data;
 
-set DC;
-
 param: DC: pop lat lng :=
 Lisbon	517802	38.71667	-9.13333
 Porto	249633	41.14961	-8.61099
