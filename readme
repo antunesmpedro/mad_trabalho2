@@ -1,1 +1,7 @@
-glpsol --math trabalho02A.mod --data trabalho02.dat -o trabalho02A.sol
+// how to compile?
+
+1 - Open AMPL IDE;
+2 - On the left tab, select the file .run, right click and send to AMPL.
+3 - If you need to recompile, please reset before, or else data will be already defined.
+
+gl hf

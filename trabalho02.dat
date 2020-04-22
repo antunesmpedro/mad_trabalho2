@@ -1,6 +1,6 @@
 data;
 
-param: DC: pop lat lng :=
+param: N: pop lat lng :=
 Lisbon	517802	38.71667	-9.13333
 Porto	249633	41.14961	-8.61099
 Amadora	178858	38.75382	-9.23083
