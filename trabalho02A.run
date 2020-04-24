@@ -1,4 +1,7 @@
 
+
+
+reset;
 model trabalho02A.mod;
 data trabalho02.dat;
 
@@ -7,7 +10,7 @@ option solver gurobi;
 solve;
 
 printf "\n";
-printf "*** minimizing total distance\n";
+printf "*** minimizing total cost ***\n";
 printf "DC cost: %g euros\n",  DTotalCost;
 printf "Total cost: %.8g euros\n", tcost;
 printf "Quantity of dc open:%g\n" ,sum{i in N} dc_open[i]; 
@@ -21,18 +24,41 @@ for {i in N} {
  for {i in N} {
  
  	if dc_open[i] == 1 then {
- 	printf "\n****** DC %s serves********\n\n", i;
+ 	printf "\n******   DC %s serves    ********\n", i;
 	}
 	
 	for {j in N} {
 	
 		if dc_serving_city[i,j] == 1 then {
-		printf "%s 	distance: %g km\n", j ,d[j,i];
+		printf "%s, " , j; 			
+		#printf "	d: %g km\n" ,d[j,i];
 		}
 	}
 	
 	if dc_open[i] == 1 then {
- 	printf "\n\n";
+ 	printf "\n************************************\n";
 	}
 	
 }
+/*
+param max1 := 0;
+param max_name := 2;
+
+*/
+
+
+for {j in N} {
+	for {i in N} {
+		if dc_serving_city[i,j] == 1 then {
+		max1 = 0;
+		if max1 < (d[i,j] * dc_serving_city[i,j] * c[j]) then {
+			max1 = (d[i,j] * dc_serving_city[i,j] * c[j]);
+			max_name = j;
+			}
+		}
+display max, max_name;
+	}
+}
+
+
+
