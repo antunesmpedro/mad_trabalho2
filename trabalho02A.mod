@@ -8,7 +8,7 @@ param R := 6371.009;   # earth radius
 param c{i in N} := ceil(pop[i] * 3 / 1000);
 param pi := 3.14159265359;
 param DCost := 25000;
-param K := 5;
+param K := 1;
 
 # Distance calculus
 param a{i in N, j in N} := max(2 * pi * R * (lat[j]-lat[i])/360 , 2 * pi * R * (lat[i]-lat[j])/360); 

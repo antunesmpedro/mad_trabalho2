@@ -7,48 +7,27 @@ param pop{N};   # cities' population
 param R := 6371.009;   # earth radius
 param c{i in N} := ceil(pop[i] * 3 / 1000);
 param pi := 3.14159265359;
-param DC := 1;
 param DCost := 25000;
+param K := 5;
+
+# Distance calculus
+param a{i in N, j in N} := max(2 * pi * R * (lat[j]-lat[i])/360 , 2 * pi * R * (lat[i]-lat[j])/360); 
+param b{i in N, j in N} := max(2 * pi * R * (lng[j]-lng[i])/360, 2 * pi * R * (lng[i]-lng[j])/360);
+param d{i in N, j in N} := a[i,j] + b[i,j];
+
+#Main variables: 
+var dc_open{N} binary;
+var dc_serving_city{N , N} binary;
+var DTotalCost; 
 
 
-# main variables: 
-var dc_to_build >=1, <= 5;
+minimize tcost: sum {i in N, j in N} (c[i]*d[i,j]*dc_serving_city[i,j]) + DTotalCost; 
 
-var dc_lat{dc_to_build};   # distribution center's latitude
-var dc_lng{dc_to_build};   # distribution center's longitude
+subject to  
+max_dc_open: sum{i in N} dc_open[i] <= K;
+min_dc_open: sum{i in N} dc_open[i] >= 1;
 
-# auxiliary variables:
-var dlat{N} >= 0;   # L1 distance component in latitude
-var dlng{N} >= 0;   # L1 distance component in longitude
-var d{N} >= 0;   # L1 distance (sum of lat + lng components)
-var DTotalCost;
+buildcost: DTotalCost = (sum{i in N} dc_open[i]) * DCost;
 
-minimize tcost: sum {i in N} c[i] * d[i] + DTotalCost; 
-
-subject to
-
-latA {i in N, j in 1 .. dc_to_build}: dlat[i,j] >= 2 * pi * R * (dc_lat[j]-lat[i])/360;
-latB {i in N, j in 1 .. dc_to_build}: dlat[i,j] >= 2 * pi * R * (lat[i]-dc_lat[j])/360;
-lngA {i in N, j in 1 .. dc_to_build}: dlng[i,j] >= 2 * pi * R * (dc_lng[j]-lng[i])/360;
-lngB {i in N, j in 1 .. dc_to_build}: dlng[i,j] >= 2 * pi * R * (lng[i]-dc_lng[j])/360;
-dist {i in N}: d[i] = sum {j in 1 .. dc_to_build} dlat[i,j] + dlng[i,j];
-buildcost: DTotalCost = DC * DCost;
-totaldc_lower: dc_to_build >= 1;
-totaldc_upper: dc_to_build <= 5;
-
-solve;
-
-printf "\n";
-printf "*** minimizing total distance\n";
-printf "Location of the DC: %g, %g \n",  dc_lat, dc_lng;
-printf "DC cost: %g euros\n",  DTotalCost;
-printf "Total cost: %.8g euros\n", tcost;
-printf "Town closest to DC:   ";
-printf {j in N: d[j] = min {i in N} d[i]} j;
-printf "\n";
-printf "Town with largest distributions costs:   ";
-printf {j in N: c[j]*d[j] = max {i in N} c[i]*d[i]} j;
-printf "\n";
-
-
-end;
+serving {j in N}: sum{i in N} dc_serving_city[i, j]= 1;  
+max_serving{i in N, j in N}: dc_serving_city[i,j] <= dc_open[i];
