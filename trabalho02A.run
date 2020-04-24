@@ -31,7 +31,8 @@ for {i in N} {
 	
 		if dc_serving_city[i,j] == 1 then {
 		printf "%s, " , j; 			
-		#printf "	d: %g km\n" ,d[j,i];
+		#printf "distance: %g km\n" ,d[j,i];
+		printf "cost: %g euros\n\n" ,c[j]*d[i,j]*dc_serving_city[i,j];
 		}
 	}
 	
@@ -46,19 +47,40 @@ param max_name := 2;
 
 */
 
+printf "\nmax cost: %g \n\n", max{i in N, j in N} (d[i,j]*dc_serving_city[i,j]*c[j]*dc_open[i]);
 
+/*
+let BIG := max{i in N, j in N} (d[i,j]*dc_serving_city[i,j]*c[j]*dc_open[i])
+printf "max maior: %g" ,BIG;
+*/
+param _maxvalue default -100;
+param citymax symbolic in N;
+param dcmax symbolic in N;
+
+for {i in N} {
+	for {j in N} {
+		if (_maxvalue < (d[i,j]*dc_serving_city[i,j]*c[j]*dc_open[i])) then {		
+			let _maxvalue :=  (d[i,j]*dc_serving_city[i,j]*c[j]*dc_open[i]);
+			let citymax:= j;
+			let dcmax := i;
+		}
+	}
+}
+
+display _maxvalue, citymax, dcmax;
+
+
+/*
+let max1 := 0;
 for {j in N} {
 	for {i in N} {
 		if dc_serving_city[i,j] == 1 then {
-		max1 = 0;
-		if max1 < (d[i,j] * dc_serving_city[i,j] * c[j]) then {
-			max1 = (d[i,j] * dc_serving_city[i,j] * c[j]);
-			max_name = j;
-			}
+			if max1 < (d[i,j] * dc_serving_city[i,j] * c[j]) then {
+				let max1 := (d[i,j] * dc_serving_city[i,j] * c[j]);
+				let max_name := j;
+				}
 		}
 display max, max_name;
 	}
 }
-
-
-
+*/
