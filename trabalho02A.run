@@ -19,28 +19,21 @@ for {i in N} {
 	printf "DC Location:%s 	(%g,%g) \n", i ,lat[i], lng[i];
 }
 }
- for {i in N} {
- 
+for {i in N} {
  	if dc_open[i] == 1 then {
  	printf "\n******   DC %s serves    ********\n", i;
 	}
-	
 	for {j in N} {
-	
 		if dc_serving_city[i,j] == 1 then {
-		printf "%s,    " , j; 			
-		#printf "distance: %g km,     " ,d[j,i];
-		printf "cost: %g euros\n" ,c[j]*d[i,j]*dc_serving_city[i,j];
+		printf "%s, \n" , j; 			
+		#printf "distance: %g km\n" ,d[j,i];
+		#printf "cost: %g euros\n\n" ,c[j]*d[i,j]*dc_serving_city[i,j];
 		}
 	}
-	
 	if dc_open[i] == 1 then {
  	printf "\n************************************\n";
 	}
-	
 }
-
-printf "\nmax cost to deliver to a city: %g \n", max{i in N, j in N} (d[i,j]*dc_serving_city[i,j]*c[j]*dc_open[i]);
 
 param _maxvalue default -100;
 param citymax symbolic in N;
@@ -55,6 +48,4 @@ for {i in N} {
 		}
 	}
 }
-
-printf "Max cost of delivery:%s --> %s with value: %g euros\n", dcmax, citymax , _maxvalue;
-
+printf "Max cost of delivery: %s --> %s with value: %g euros\n\n", dcmax, citymax , _maxvalue;
