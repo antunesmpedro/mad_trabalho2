@@ -41,18 +41,9 @@ for {i in N} {
 	}
 	
 }
-/*
-param max1 := 0;
-param max_name := 2;
-
-*/
 
 printf "\nmax cost: %g \n\n", max{i in N, j in N} (d[i,j]*dc_serving_city[i,j]*c[j]*dc_open[i]);
 
-/*
-let BIG := max{i in N, j in N} (d[i,j]*dc_serving_city[i,j]*c[j]*dc_open[i])
-printf "max maior: %g" ,BIG;
-*/
 param _maxvalue default -100;
 param citymax symbolic in N;
 param dcmax symbolic in N;
@@ -69,18 +60,3 @@ for {i in N} {
 
 display _maxvalue, citymax, dcmax;
 
-
-/*
-let max1 := 0;
-for {j in N} {
-	for {i in N} {
-		if dc_serving_city[i,j] == 1 then {
-			if max1 < (d[i,j] * dc_serving_city[i,j] * c[j]) then {
-				let max1 := (d[i,j] * dc_serving_city[i,j] * c[j]);
-				let max_name := j;
-				}
-		}
-display max, max_name;
-	}
-}
-*/
