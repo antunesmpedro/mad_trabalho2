@@ -21,12 +21,10 @@ var dc_serving_city{N , N} binary;
 var DTotalCost; 
 
 
-minimize tcost: sum {i in N, j in N} (c[i]*d[i,j]*dc_serving_city[i,j]) + DTotalCost; 
+minimize tcost: sum {i in N, j in N} (c[j]*d[i,j]*dc_serving_city[i,j]) + DTotalCost; 
 
 subject to  
-max_dc_open: sum{i in N} dc_open[i] <= K;
-min_dc_open: sum{i in N} dc_open[i] >= 1;
-
+rest_dc_open: sum{i in N} dc_open[i] = 1;
 buildcost: DTotalCost = (sum{i in N} dc_open[i]) * DCost;
 
 serving {j in N}: sum{i in N} dc_serving_city[i, j]= 1;  

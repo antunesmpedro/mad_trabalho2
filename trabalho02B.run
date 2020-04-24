@@ -2,7 +2,7 @@
 
 
 reset;
-model trabalho02A.mod;
+model trabalho02B.mod;
 data trabalho02.dat;
 
 option solver gurobi;
@@ -19,27 +19,20 @@ for {i in N} {
 	printf "DC Location:%s 	(%g,%g) \n", i ,lat[i], lng[i];
 }
 }
- 
- printf "\n\n";
- for {i in N} {
- 
+for {i in N} {
  	if dc_open[i] == 1 then {
  	printf "\n******   DC %s serves    ********\n", i;
 	}
-	
 	for {j in N} {
-	
 		if dc_serving_city[i,j] == 1 then {
 		printf "%s, " , j; 			
 		#printf "distance: %g km\n" ,d[j,i];
-		printf "cost: %g euros\n\n" ,c[j]*d[i,j]*dc_serving_city[i,j];
+		#printf "cost: %g euros\n\n" ,c[j]*d[i,j]*dc_serving_city[i,j];
 		}
 	}
-	
 	if dc_open[i] == 1 then {
  	printf "\n************************************\n";
 	}
-	
 }
 
 printf "\nmax cost: %g \n\n", max{i in N, j in N} (d[i,j]*dc_serving_city[i,j]*c[j]*dc_open[i]);
@@ -57,6 +50,4 @@ for {i in N} {
 		}
 	}
 }
-
-display _maxvalue, citymax, dcmax;
-
+printf "Max cost of delivery:%s --> %s with value: %g euros\n", dcmax, citymax , _maxvalue;
