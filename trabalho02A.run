@@ -2,12 +2,37 @@
 model trabalho02A.mod;
 data trabalho02.dat;
 
+option solver gurobi;
+
 solve;
 
 printf "\n";
 printf "*** minimizing total distance\n";
 printf "DC cost: %g euros\n",  DTotalCost;
 printf "Total cost: %.8g euros\n", tcost;
-printf "Town closest to DC:   ";
-printf "\n";
-
+printf "Quantity of dc open:%g\n" ,sum{i in N} dc_open[i]; 
+for {i in N} {
+	if dc_open[i] == 1 then {
+	printf "DC Location:%s 	(%g,%g) \n", i ,lat[i], lng[i];
+}
+}
+ 
+ printf "\n\n";
+ for {i in N} {
+ 
+ 	if dc_open[i] == 1 then {
+ 	printf "\n****** DC %s serves********\n\n", i;
+	}
+	
+	for {j in N} {
+	
+		if dc_serving_city[i,j] == 1 then {
+		printf "%s 	distance: %g km\n", j ,d[j,i];
+		}
+	}
+	
+	if dc_open[i] == 1 then {
+ 	printf "\n\n";
+	}
+	
+}
